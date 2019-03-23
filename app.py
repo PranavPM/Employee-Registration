@@ -4,10 +4,8 @@ import os
 app = Flask(__name__)
 
 
-UPLOAD_FOLDER = os.path.basename('uploads')
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['MAX_CONTENT_LENGTH'] = 5 * 1024 * 1024
-UPLOAD_FOLDER = '/path/to/the/uploads'
+UPLOAD_FOLDER = os.path.dirname(os.path.abspath(__file__))
 ALLOWED_EXTENSIONS = set(['jpg', 'gif', 'png'])
 
 def allowed_file(filename):
@@ -20,6 +18,26 @@ def home():
        conn.execute('CREATE TABLE if not EXISTS invited (empid TEXT not null unique, acn INTEGER not null check(acn between 0 and 99999))')
        conn.close()
        return render_template('home.html')
+
+@app.route('/upimg',methods = ['POST', 'GET'])       
+def upload():
+    if request.method == 'POST':
+         if request.form['file'] == 'file':
+                  target = os.path.join(UPLOAD_FOLDER, 'images/')
+
+                  if not os.path.isdir(target):
+                        os.mkdir(target)
+
+                  for file in request.files.getlist("file"):
+
+                        filename = file.filename
+                        destination = "/".join([target, filename])
+
+                        file.save(destination)
+                        msg = "Image Uploaded"
+                        break
+                  render_template("notregistered.html", msg=msg)
+
      
 
 @app.route('/emp',methods = ['POST', 'GET'])
@@ -32,28 +50,18 @@ def emp():
             with sql.connect("database.db") as con:
                 con.execute('INSERT INTO registry VALUES (?,?)',(empid,acn) )
                 msg = "Entry successful. \nThank you!!"
-                con.commit()
-            if request.method == 'POST':
-                  if 'file' not in request.files:
-                        flash('No file part')
-                        return redirect(request.url)
-                  file = request.files['file']
-                              
-                  if file.filename == '':
-                        flash('No selected file')
-                        return redirect(request.url)                  
-
-                  if file and allowed_file(file.filename):
-                        filename = secure_filename(file.filename)
-                        file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-                        os.rename =(filename , empid)     
-                    
-            
+                con.commit()          
+                                
       except :
          con.rollback()
          msg = "Try again"
 
-      finally:         
-         return render_template("notregistered.html",msg = msg)
-         con.close()
+      finally:   
+            con.close()      
+            return render_template("notregistered.html",msg = msg)
+         
                  
+if __name__ == '__main__':
+         app.debug = True
+         app.run(port=4555)
+

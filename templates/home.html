@@ -10,7 +10,8 @@
 </head>
     <div class="w-3/5 container mx-auto h-full md:flex center items-center">
 <body class="md:w-1/3 w-4/5 container bg-white mx-auto mx-4 my-4 px-2 py-4 shadow-lg rounded-lg">
-      <form action='\emp' method = "POST">
+      
+        
         <div class="text-center sm:text-left sm:flex-grow">
             
               <p class="mt-2 -mx-2 text-xl leading-tight text-center sm:text-3xl">UPLOAD YOUR PICTURE</p>
@@ -20,13 +21,15 @@
               </div>
                
               <p class="text-sm leading-tight text-center md:text-2xl text-sm text-grey-dark">Max file size: 5mb, accepted: jpg|gif|png</p>
-
+            <form  action='\upimg' method = "POST"> 
               <div class="md:flex md:items-center md:justify-center">
-                <button class="mt-5 mb-2 lg:py-2 lg:px-4 py-2 px-1 md:py-1 md:px-4 md:justify-center bg-blue hover:bg-blue-dark md:text-base text-xs text-white md:font-bold rounded-full">
-                     Choose image
+                <button class="mt-5 mb-2 lg:py-2 lg:px-4 py-2 px-1 md:py-1 md:px-4 md:justify-center bg-blue hover:bg-blue-dark md:text-base text-xs text-white md:font-bold rounded-full" type="file" name="file" accept="image/" value = "file">
+                      Upload Image
                 </button>
               </div> 
+            </form>        
 
+      <form action='\emp' method = "POST">
               <div class="md:mb-4 md:mt-5 mt-2">
                 <label class="font-bold text-grey-darker text-sm block mb-2">Employee Id<span style="color:red">*</span></label>
                 <input type="text" class="block appearance-none md:w-full md:w-2/5 w-full bg-white border border-grey-light hover:border-grey px-2 py-2 block mb-2 text-xs rounded shadow" placeholder="Your Employee Id" name="empid" required>
@@ -38,7 +41,7 @@
             </div>
 
             <div class="md:flex md:items-center md:justify-center">
-                <button class="mt-5 mb-5 lg:py-2 lg:px-4 w-full mb-10 py-2 md:py-1 md:px-4 md:justify-center bg-blue hover:bg-blue-dark md:text-base text-xs text-white md:font-bold rounded">
+                <button class="mt-5 mb-5 lg:py-2 lg:px-4 w-full mb-10 py-2 md:py-1 md:px-4 md:justify-center bg-blue hover:bg-blue-dark md:text-base text-xs text-white md:font-bold rounded" type="submit" value = "submit">
                      SUBMIT
                 </button>
             </div> 
